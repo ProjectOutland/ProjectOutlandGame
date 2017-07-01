@@ -29,6 +29,7 @@ public class AudioControl1 : MonoBehaviour
        emitter = this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>();
         randomcolor = (new Color(Random.value, Random.value, Random.value, 1));
         thisbutton = gameObject.GetComponent<Image>();
+        keytopress = gameObject.name;
     }
 
     // Update is called once per frame

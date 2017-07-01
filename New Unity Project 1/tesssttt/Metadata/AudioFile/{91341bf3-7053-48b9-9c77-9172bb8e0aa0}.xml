@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.09.00">
+    <object class="AudioFile" id="{91341bf3-7053-48b9-9c77-9172bb8e0aa0}">
+        <property name="assetPath">
+            <value>burial style 12-PSY shaker01.aif</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>108.88889583333334</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{cc33fc0e-47e0-475f-b4b9-e4060bc72b4d}</destination>
+        </relationship>
+    </object>
+</objects>
