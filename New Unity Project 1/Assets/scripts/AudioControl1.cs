@@ -42,14 +42,14 @@ public class AudioControl1 : MonoBehaviour
         if (turndownActivate == true && turndowntimer >=0.000000001)
         {
             turndowntimer = turndowntimer - Time.deltaTime / 2;
-            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, -50, gameObject.transform.position.z);
+            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - +1, gameObject.transform.position.z);
         }
 
         if (turndownActivate == false && turndowntimer <= 1 && emitter.enabled == true)
         {
             turndowntimer = turndowntimer + Time.deltaTime / 2;
             thisbutton.color= randomcolor;
-            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, -8, gameObject.transform.position.z);
+            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y  - -1, gameObject.transform.position.z);
         }
 
         if (active)
