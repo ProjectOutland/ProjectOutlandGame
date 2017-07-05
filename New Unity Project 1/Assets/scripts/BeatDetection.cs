@@ -6,42 +6,42 @@ using UnityEngine;
 
 public class BeatDetection : MonoBehaviour {
 
-    [StructLayout(LayoutKind.Sequential)]
-    class TimelineInfo {
-        public int currentMusicBar = 0;
-        public FMOD.StringWrapper lastMarker = new FMOD.StringWrapper();
-    }
-
-    public int bar = 0;
-    public float beat = 0;
     public GameObject shadedObj;
     Material mat;
     Color colour = new Color(0, 0, 1, 1 );
+    float beat = 0;
 
-    TimelineInfo timelineInfo;
-    GCHandle timelineHandle;
+    [SerializeField]
+    public FMOD.Studio.EventInstance musicInstance;
 
-    FMOD.Studio.EVENT_CALLBACK beatCallback;
-    FMOD.Studio.EventInstance musicInstance;
+    FMOD.DSP dsp;
+    int WindowSize = 1024;
 
     void Start() {
         mat = shadedObj.GetComponent<Renderer>().materials[0];
-        //Debug.Log(String.Format("R: {0}, G: {1}, B: {2}, A: {3}", colour[0], colour[1], colour[2], colour[3]));
-        //timelineInfo = new TimelineInfo();
+        musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/f");
 
-        //beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
-        //musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/music/music");
-        //timelineHandle = GCHandle.Alloc(timelineInfo, GCHandleType.Pinned);
-        //musicInstance.setUserData(GCHandle.ToIntPtr(timelineHandle));
-        //musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
-        //musicInstance.start();
+        // Create Spectrum
+        FMODUnity.RuntimeManager.LowlevelSystem.createDSPByType(FMOD.DSP_TYPE.FFT, out dsp);
+        dsp.setParameterInt((int)FMOD.DSP_FFT.WINDOWTYPE, (int)FMOD.DSP_FFT_WINDOW.HANNING);
+        dsp.setParameterInt((int)FMOD.DSP_FFT.WINDOWSIZE, WindowSize * 2);
+
+        FMOD.ChannelGroup channelGroup;
+        FMODUnity.RuntimeManager.LowlevelSystem.getMasterChannelGroup(out channelGroup);
+        channelGroup.addDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, dsp);
+        
     }
 
     void Update() {
-        //if (timelineInfo.currentMusicBar > bar) {
-        //    bar = timelineInfo.currentMusicBar;
-        //    Debug.Log(String.Format("Current Bar: {0}, Last Marker: {1}", timelineInfo.currentMusicBar, (string)timelineInfo.lastMarker));
-        //}
+        float[][] spectrum = GetSpectrumData();
+            for (int i = 0; i < spectrum[0].Length; ++i) {
+                Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
+                
+            }
+        Debug.Log("Channels: " + spectrum.Length);
+        Debug.Log("Bin: " + spectrum[0].Length);
+
+        // Set and pass shader values
         beat += Time.deltaTime * 3;
         if (beat > 3) {
             beat = 0;
@@ -55,39 +55,33 @@ public class BeatDetection : MonoBehaviour {
         mat.SetColor("_Color", colour);
     }
 
-    void OnDestroy() {
-        //musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        //musicInstance.release();
-        //timelineHandle.Free();
-    }
+    float[][] GetSpectrumData() {
+        IntPtr unmanagedData;
+        uint length;
+        dsp.getParameterData((int)FMOD.DSP_FFT.SPECTRUMDATA, out unmanagedData, out length);
+        FMOD.DSP_PARAMETER_FFT fftData = (FMOD.DSP_PARAMETER_FFT)Marshal.PtrToStructure(unmanagedData, typeof(FMOD.DSP_PARAMETER_FFT));
+        float[][] spectrum = fftData.spectrum;
+        return spectrum;
 
-    void OnGUI() {
-       // GUILayout.Box(String.Format("Current Bar = {0}, Last Marker = {1}", timelineInfo.currentMusicBar, (string)timelineInfo.lastMarker));
-    }
+        // Drawing the Spectrum - Not important - Useful to visualize values
+        /*
+        if (fftData.numchannels > 0) {
+            LineRenderer lineRenderer;
+            float Width = 10;
+            float Height = 0.1f;
 
-    [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
-    static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr) {
-        FMOD.Studio.EventInstance instance = new FMOD.Studio.EventInstance(instancePtr);
+            Vector3 pos = Vector3.zero;
+            pos.x = Width * -0.5f;
 
-        IntPtr timelineInfoPtr;
-        instance.getUserData(out timelineInfoPtr);
+            for (int i = 0; i < WindowSize; ++i) {
+                pos.x += (Width / WindowSize);
+                float level = Mathf.Clamp(Mathf.Log10(spectrum[0][i]) * 20, -80, 0);
+                pos.y = (80 + level) * Height;
 
-        GCHandle timelineHandle = GCHandle.FromIntPtr(timelineInfoPtr);
-        TimelineInfo timelineInfo = (TimelineInfo)timelineHandle.Target;
-
-        switch(type) {
-            case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT: {
-                    var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
-                    timelineInfo.currentMusicBar = parameter.bar;
-                }
-                break;
-            case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER: {
-                    var parameter = (FMOD.Studio.TIMELINE_MARKER_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_MARKER_PROPERTIES));
-                    timelineInfo.lastMarker = parameter.name;
-                }
-                break;
+                lineRenderer.SetPosition(i, pos);
+            }
         }
-        return FMOD.RESULT.OK;
+        */
     }
 
 }
