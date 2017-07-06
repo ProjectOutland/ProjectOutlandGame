@@ -7,13 +7,13 @@
 		_Music("Music", Range(0,1)) = 0.0
 	}
 	SubShader {
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Opaque"  }
 		LOD 200
 		
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard fullforwardshadows vertex:vert
-
+		#pragma surface surf Standard  vertex:vert 
+		
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
@@ -42,12 +42,14 @@
 		void vert(inout appdata_full v) {
 			float a = abs(v.vertex.y - _Music);
 			v.vertex.xyz += v.normal *saturate(1 - a * 2);
+			
 			if (_Music <= 0.1) {
 				// Inflate the bloody thing
-				v.vertex.xyz += v.normal * cos(_Music);
+				//v.vertex.xyz = v.vertex.xyz + v.normal * cos(_Music);
 			}
-			else if (_Music <= 0.2) {
-				v.vertex.xyz -= v.normal * cos(_Music);
+			//if (_Music <= 0.5) 
+			{
+				v.vertex.xyz += v.normal * cos(1 - _Music)*0.5;
 			}
 		}
 
@@ -59,6 +61,8 @@
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
 			o.Alpha = c.a;
+			//o.Alpha = 0.5;
+			clip(c.a-0.05);
 		}
 		ENDCG
 	}

@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class BeatDetection : MonoBehaviour {
 
-    public GameObject shadedObj;
-    Material mat;
+    public GameObject[] shadedObj;
     Color colour = new Color(0, 0, 1, 1 );
     float beat = 0;
 
@@ -18,7 +18,8 @@ public class BeatDetection : MonoBehaviour {
     int WindowSize = 1024;
 
     void Start() {
-        mat = shadedObj.GetComponent<Renderer>().materials[0];
+        shadedObj = GameObject.FindGameObjectsWithTag("Plant");
+        
         musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/f");
 
         // Create Spectrum
@@ -29,17 +30,24 @@ public class BeatDetection : MonoBehaviour {
         FMOD.ChannelGroup channelGroup;
         FMODUnity.RuntimeManager.LowlevelSystem.getMasterChannelGroup(out channelGroup);
         channelGroup.addDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, dsp);
-        
+
     }
 
     void Update() {
+
+        shadedObj = GameObject.FindGameObjectsWithTag("Plant");
         float[][] spectrum = GetSpectrumData();
+        try
+            {
             for (int i = 0; i < spectrum[0].Length; ++i) {
                 Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
-                
             }
-        Debug.Log("Channels: " + spectrum.Length);
-        Debug.Log("Bin: " + spectrum[0].Length);
+            Debug.Log("Channels: " + spectrum.Length);
+            Debug.Log("Bin: " + spectrum[0].Length);
+        }
+        catch (System.Exception e) {
+            Debug.Log(e);
+        }
 
         // Set and pass shader values
         beat += Time.deltaTime * 3;
@@ -51,8 +59,12 @@ public class BeatDetection : MonoBehaviour {
             colour[3] = 1;
             //Debug.Log(String.Format("R: {0}, G: {1}, B: {2}, A: {3}", colour[0], colour[1], colour[2], colour[3]));
         }
-        mat.SetFloat("_Music", beat - 1.0f);
-        mat.SetColor("_Color", colour);
+        foreach (GameObject plant in shadedObj) {
+            foreach (Material mat in plant.GetComponent<Renderer>().materials) {
+                    mat.SetFloat("_Music", beat);
+                    mat.SetColor("_Color", colour);
+            }
+        }
     }
 
     float[][] GetSpectrumData() {
