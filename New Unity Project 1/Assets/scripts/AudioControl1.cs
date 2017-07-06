@@ -12,7 +12,9 @@ using UnityEngine.UI;
 
 public class AudioControl1 : MonoBehaviour
 {
+    public PlantSpawn plantspawn;
     public string keytopress;
+    public int plantNumber;
     public bool active;
     public float wait;
     public float volumeLevel;
@@ -63,7 +65,7 @@ public class AudioControl1 : MonoBehaviour
         if (Input.GetKeyDown (keytopress) && !active )
             
         {
-            
+            plantspawn.GetComponent<PlantSpawn>().spawnPlants[plantNumber] = true;
             //YOU NEED TO ADD FMODUnity BECAUSE IN StudioEventEmitter IT IS IN A NAME SPACE
             this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>().enabled = true;
 
@@ -79,8 +81,8 @@ public class AudioControl1 : MonoBehaviour
         //    gameObject.GetComponent<Renderer>().material.color = (Color.black);
             wait = 1f;
             Debug.Log("YEP I WORK");
-            
 
+            plantspawn.GetComponent<PlantSpawn>().spawnPlants[plantNumber] = false;
             ;            turndownActivate = true;
             //    this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>().enabled = false;
         }
