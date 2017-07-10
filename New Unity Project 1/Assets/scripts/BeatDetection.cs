@@ -11,8 +11,7 @@ public class BeatDetection : MonoBehaviour {
     Color colour = new Color(0, 0, 1, 1 );
     float beat = 0;
 
-    [SerializeField]
-    public FMOD.Studio.EventInstance musicInstance;
+    FMOD.Studio.EventInstance[][] musicInstances = new FMOD.Studio.EventInstance[64][];
 
     FMOD.DSP dsp;
     int WindowSize = 1024;
@@ -20,7 +19,7 @@ public class BeatDetection : MonoBehaviour {
     void Start() {
         shadedObj = GameObject.FindGameObjectsWithTag("Plant");
         
-        musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/f");
+        //musicInstance = FMODUnity.RuntimeManager.CreateInstance("event:/f");
 
         // Create Spectrum
         FMODUnity.RuntimeManager.LowlevelSystem.createDSPByType(FMOD.DSP_TYPE.FFT, out dsp);
@@ -30,6 +29,10 @@ public class BeatDetection : MonoBehaviour {
         FMOD.ChannelGroup channelGroup;
         FMODUnity.RuntimeManager.LowlevelSystem.getMasterChannelGroup(out channelGroup);
         channelGroup.addDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, dsp);
+        FMODUnity.StudioEventEmitter[] emitters = FindObjectsOfType<FMODUnity.StudioEventEmitter>();
+        for (int ev = 0; ev < emitters.Length; ++ev) {
+            FMODUnity.RuntimeManager.GetEventDescription(emitters[ev].Event).getInstanceList(out musicInstances[ev]);
+        }
 
     }
 
@@ -42,8 +45,14 @@ public class BeatDetection : MonoBehaviour {
             for (int i = 0; i < spectrum[0].Length; ++i) {
                 Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
             }
-            Debug.Log("Channels: " + spectrum.Length);
-            Debug.Log("Bin: " + spectrum[0].Length);
+            float[] dSpectrum = {0, 0, 0, 0, 0 };
+                for (int i = 0; i <= 4; ++i) {
+                    if (spectrum[0][i * 200] > 0.001f)
+                        dSpectrum[i] = spectrum[0][i * 200];
+
+                }
+
+            Debug.Log(string.Format("Spectrum: {0} {1} {2} {3} {4}", dSpectrum[0], dSpectrum[1], dSpectrum[2], dSpectrum[3], dSpectrum[4]));
         }
         catch (System.Exception e) {
             Debug.Log(e);
