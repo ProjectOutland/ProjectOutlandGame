@@ -66,7 +66,7 @@
             <destination>{92ee950c-981f-41d4-a9b1-9c9352da1ffe}</destination>
         </relationship>
         <relationship name="modules">
-            <destination>{f5db24b6-d972-4a8c-b81b-5b2e49d4af76}</destination>
+            <destination>{d72bccf7-6314-4553-b672-4dfa419fb8dd}</destination>
         </relationship>
         <relationship name="mixerGroup">
             <destination>{129c0dcd-f85d-49d6-a68f-7fd87cfcb6d7}</destination>
@@ -74,10 +74,10 @@
     </object>
     <object class="Timeline" id="{fb967dfb-889b-45e8-8cc0-08cad836b885}">
         <relationship name="modules">
-            <destination>{f5db24b6-d972-4a8c-b81b-5b2e49d4af76}</destination>
+            <destination>{d72bccf7-6314-4553-b672-4dfa419fb8dd}</destination>
         </relationship>
         <relationship name="markers">
-            <destination>{3224183b-7d31-44be-a5d1-64a0f8063dc2}</destination>
+            <destination>{d56b85b2-e539-4143-b0f7-769aee784e90}</destination>
         </relationship>
     </object>
     <object class="GameParameter" id="{88400376-6ece-47fa-8281-97fc097ee3df}">
@@ -119,12 +119,12 @@
             <destination>{129c0dcd-f85d-49d6-a68f-7fd87cfcb6d7}</destination>
         </relationship>
     </object>
-    <object class="SingleSound" id="{f5db24b6-d972-4a8c-b81b-5b2e49d4af76}">
+    <object class="SingleSound" id="{d72bccf7-6314-4553-b672-4dfa419fb8dd}">
         <property name="length">
-            <value>108.88889583333334</value>
+            <value>17.777770833333335</value>
         </property>
         <relationship name="audioFile">
-            <destination>{513eda85-0ef3-4223-a98d-ac49f3e50ff8}</destination>
+            <destination>{0beeaad3-3c9a-4b9d-8fa7-a9ec4b73efe7}</destination>
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{129c0dcd-f85d-49d6-a68f-7fd87cfcb6d7}">
@@ -144,12 +144,12 @@
             <destination>{4ea41e34-d7b4-4089-b2ef-068d1d977df0}</destination>
         </relationship>
     </object>
-    <object class="LoopRegion" id="{3224183b-7d31-44be-a5d1-64a0f8063dc2}">
+    <object class="LoopRegion" id="{d56b85b2-e539-4143-b0f7-769aee784e90}">
         <property name="position">
             <value>0</value>
         </property>
         <property name="length">
-            <value>108.88889583333334</value>
+            <value>17.777770833333335</value>
         </property>
         <relationship name="timeline">
             <destination>{fb967dfb-889b-45e8-8cc0-08cad836b885}</destination>

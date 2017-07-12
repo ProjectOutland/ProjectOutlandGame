@@ -21,7 +21,7 @@ public class AudioControl1 : MonoBehaviour
     public float turndowntimer;
     public bool turndownActivate;
     public FMODUnity.StudioEventEmitter emitter;
-    public Color randomcolor;
+    public Color firstcolor;
     public Image thisbutton;
     // Use this for initialization
     void Start()
@@ -29,8 +29,8 @@ public class AudioControl1 : MonoBehaviour
         wait = 1f;
        // gameObject.GetComponent<Renderer>().material.color = (Color.black);
        emitter = this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>();
-        randomcolor = (new Color(Random.value, Random.value, Random.value, 1));
-        thisbutton = gameObject.GetComponent<Image>();
+       thisbutton = gameObject.GetComponent<Image>();
+        firstcolor = thisbutton.color;
         keytopress = gameObject.name;
     }
 
@@ -44,23 +44,21 @@ public class AudioControl1 : MonoBehaviour
         if (turndownActivate == true && turndowntimer >=0.000000001)
         {
             turndowntimer = turndowntimer - Time.deltaTime / 2;
-            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - +1, gameObject.transform.position.z);
+            thisbutton.color = Color.green;
+           
+
+            //  this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - +1, gameObject.transform.position.z);
         }
 
         if (turndownActivate == false && turndowntimer <= 1 && emitter.enabled == true)
         {
             turndowntimer = turndowntimer + Time.deltaTime / 2;
-            thisbutton.color= randomcolor;
-            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y  - -1, gameObject.transform.position.z);
+            thisbutton.color= firstcolor;
+            Debug.Log("YEP I WORK");
+            // this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y  - -1, gameObject.transform.position.z);
         }
 
-        if (active)
-        {
-            
-
-
-
-        }
+        
       
         if (Input.GetKeyDown (keytopress) && !active )
             
@@ -69,21 +67,25 @@ public class AudioControl1 : MonoBehaviour
             //YOU NEED TO ADD FMODUnity BECAUSE IN StudioEventEmitter IT IS IN A NAME SPACE
             this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>().enabled = true;
 
-        //    gameObject.GetComponent<Renderer>().material.color = (Color.green);
+         //  gameObject.GetComponent<Renderer>().material.color = (Color.green);
             wait = wait - 0.5f;
             turndownActivate = false;
-           // active = true;
+            thisbutton.color = Color.green;
+
+            // active = true;
         }
 
 
         if (Input.GetKeyDown(keytopress) && wait <= 0 && turndownActivate == false)
         {
-        //    gameObject.GetComponent<Renderer>().material.color = (Color.black);
-            wait = 1f;
-            Debug.Log("YEP I WORK");
+            //    gameObject.GetComponent<Renderer>().material.color = (Color.black);
 
+
+            turndowntimer = 1f;
             plantspawn.GetComponent<PlantSpawn>().spawnPlants[plantNumber] = false;
             ;            turndownActivate = true;
+            thisbutton.color = Color.green;
+            wait = 1f;
             //    this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>().enabled = false;
         }
     }
