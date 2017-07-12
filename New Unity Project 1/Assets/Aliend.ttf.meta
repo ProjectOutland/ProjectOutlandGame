@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d55bea9938afd694c9020803487f5cd9
+timeCreated: 1499838879
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Alienoid
+  fontNames:
+  - Alienoid
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
