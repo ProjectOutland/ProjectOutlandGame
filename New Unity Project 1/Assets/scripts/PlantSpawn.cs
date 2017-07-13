@@ -154,6 +154,38 @@ public class PlantSpawn : MonoBehaviour
                 }
             }
 
+            if (spawnPlants[8] == true) {
+                for (int i = 0; i < spawnAmount; i++) {
+                    randomLocation.position = new Vector3(Random.Range(this.gameObject.transform.position.x - spawnRange, this.gameObject.transform.position.x + spawnRange), 0, (Random.Range(this.gameObject.transform.position.z - spawnRange, this.gameObject.transform.position.z + spawnRange)));
+
+                    pos.y = Terrain.activeTerrain.SampleHeight(randomLocation.position) + Terrain.activeTerrain.transform.position.y;
+                    if (checkIfPosEmpty(randomLocation.position)) {
+                        Instantiate(Plants[7].gameObject, new Vector3(randomLocation.position.x, pos.y, randomLocation.position.z), Quaternion.identity);
+                    }
+                }
+            }
+
+            if (spawnPlants[9] == true) {
+                for (int i = 0; i < spawnAmount; i++) {
+                    randomLocation.position = new Vector3(Random.Range(this.gameObject.transform.position.x - spawnRange, this.gameObject.transform.position.x + spawnRange), 0, (Random.Range(this.gameObject.transform.position.z - spawnRange, this.gameObject.transform.position.z + spawnRange)));
+
+                    pos.y = Terrain.activeTerrain.SampleHeight(randomLocation.position) + Terrain.activeTerrain.transform.position.y;
+                    if (checkIfPosEmpty(randomLocation.position)) {
+                        Instantiate(Plants[7].gameObject, new Vector3(randomLocation.position.x, pos.y, randomLocation.position.z), Quaternion.identity);
+                    }
+                }
+            }
+
+            if (spawnPlants[10] == true) {
+                for (int i = 0; i < spawnAmount; i++) {
+                    randomLocation.position = new Vector3(Random.Range(this.gameObject.transform.position.x - spawnRange, this.gameObject.transform.position.x + spawnRange), 0, (Random.Range(this.gameObject.transform.position.z - spawnRange, this.gameObject.transform.position.z + spawnRange)));
+
+                    pos.y = Terrain.activeTerrain.SampleHeight(randomLocation.position) + Terrain.activeTerrain.transform.position.y;
+                    if (checkIfPosEmpty(randomLocation.position)) {
+                        Instantiate(Plants[7].gameObject, new Vector3(randomLocation.position.x, pos.y, randomLocation.position.z), Quaternion.identity);
+                    }
+                }
+            }
             return;
         }
 

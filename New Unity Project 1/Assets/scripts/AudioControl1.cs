@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMOD.Studio;
 using UnityEngine.UI;
+using System.Runtime.InteropServices;
 
 
 
@@ -23,6 +24,12 @@ public class AudioControl1 : MonoBehaviour
     public FMODUnity.StudioEventEmitter emitter;
     public Color randomcolor;
     public Image thisbutton;
+
+    // DSP
+    FMOD.Studio.EventInstance[] ev;
+    FMOD.DSP dsp;
+    int WindowSize = 1024;
+
     // Use this for initialization
     void Start()
     {
@@ -32,6 +39,17 @@ public class AudioControl1 : MonoBehaviour
         randomcolor = (new Color(Random.value, Random.value, Random.value, 1));
         thisbutton = gameObject.GetComponent<Image>();
         keytopress = gameObject.name;
+
+        // DSP Initialization
+        FMODUnity.RuntimeManager.LowlevelSystem.createDSPByType(FMOD.DSP_TYPE.FFT, out dsp);
+        dsp.setParameterInt((int)FMOD.DSP_FFT.WINDOWTYPE, (int)FMOD.DSP_FFT_WINDOW.HANNING);
+        dsp.setParameterInt((int)FMOD.DSP_FFT.WINDOWSIZE, WindowSize * 2);
+        FMOD.ChannelGroup channelGroup;
+        // Change to uniqe channel groups
+        FMODUnity.RuntimeManager.LowlevelSystem.getMasterChannelGroup(out channelGroup);
+
+        channelGroup.addDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, dsp);
+        FMODUnity.RuntimeManager.GetEventDescription(emitter.Event).getInstanceList(out ev);
     }
 
     // Update is called once per frame
@@ -86,6 +104,33 @@ public class AudioControl1 : MonoBehaviour
             ;            turndownActivate = true;
             //    this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>().enabled = false;
         }
+
+        // DSP Stuff
+        float[][] spectrum = GetSpectrumData();
+        try {
+            for (int i = 0; i < spectrum[0].Length; ++i) {
+                Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
+            }
+            float[] dSpectrum = {0, 0, 0, 0, 0};
+            for (int i = 0; i <= 4; ++i) {
+                if (spectrum[0][i * 200] > 0.001f)
+                    dSpectrum[i] = spectrum[0][i * 200];
+            }
+            Debug.Log(string.Format("Spectrum {5}: {0} {1} {2} {3} {4}", dSpectrum[0], dSpectrum[1], dSpectrum[2], dSpectrum[3], dSpectrum[4], this.name));
+        }
+        catch (System.Exception e) {
+            // Debug.Log(e);
+        }
+            
+
+    }
+
+    float[][] GetSpectrumData() {
+        System.IntPtr unmanagedData;
+        uint length;
+        dsp.getParameterData((int)FMOD.DSP_FFT.SPECTRUMDATA, out unmanagedData, out length);
+        FMOD.DSP_PARAMETER_FFT fftData = (FMOD.DSP_PARAMETER_FFT)Marshal.PtrToStructure(unmanagedData, typeof(FMOD.DSP_PARAMETER_FFT));
+        return fftData.spectrum;
     }
 }
 
