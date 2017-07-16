@@ -24,6 +24,7 @@ public class AudioControl1 : MonoBehaviour
     public FMODUnity.StudioEventEmitter emitter;
     public Color randomcolor;
     public Image thisbutton;
+    public Color firstColor;
 
     // DSP
     FMOD.Studio.EventInstance[] ev;
@@ -33,11 +34,14 @@ public class AudioControl1 : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+       
         wait = 1f;
-       // gameObject.GetComponent<Renderer>().material.color = (Color.black);
-       emitter = this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>();
+        // gameObject.GetComponent<Renderer>().material.color = (Color.black);
+
+        emitter = this.gameObject.GetComponent<FMODUnity.StudioEventEmitter>();
         randomcolor = (new Color(Random.value, Random.value, Random.value, 1));
         thisbutton = gameObject.GetComponent<Image>();
+        firstColor = thisbutton.color;
         keytopress = gameObject.name;
 
         // DSP Initialization
@@ -62,14 +66,16 @@ public class AudioControl1 : MonoBehaviour
         if (turndownActivate == true && turndowntimer >=0.000000001)
         {
             turndowntimer = turndowntimer - Time.deltaTime / 2;
-            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - +1, gameObject.transform.position.z);
+            thisbutton.color = firstColor;
+       //     this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - +1, gameObject.transform.position.z);
         }
 
         if (turndownActivate == false && turndowntimer <= 1 && emitter.enabled == true)
         {
             turndowntimer = turndowntimer + Time.deltaTime / 2;
             thisbutton.color= randomcolor;
-            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y  - -1, gameObject.transform.position.z);
+
+       //     this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y  - -1, gameObject.transform.position.z);
         }
 
         if (active)
