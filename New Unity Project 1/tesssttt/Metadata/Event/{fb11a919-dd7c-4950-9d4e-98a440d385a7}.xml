@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.01.09.00">
     <object class="Event" id="{fb11a919-dd7c-4950-9d4e-98a440d385a7}">
         <property name="name">
-            <value>k</value>
+            <value>0</value>
         </property>
         <property name="outputFormat">
             <value>1</value>
@@ -66,7 +66,7 @@
             <destination>{a3a061ee-f1a5-4dff-8f55-25040aee8f4e}</destination>
         </relationship>
         <relationship name="modules">
-            <destination>{8851778c-aa70-4a57-99cd-c0f18472da41}</destination>
+            <destination>{676e6f47-98de-40ec-9f8a-bfc435925389}</destination>
         </relationship>
         <relationship name="mixerGroup">
             <destination>{854974be-e1b5-4001-8f8c-e76d555f37ba}</destination>
@@ -74,10 +74,10 @@
     </object>
     <object class="Timeline" id="{f2eb5f53-4cf3-488f-b5f2-f46209de5e0a}">
         <relationship name="modules">
-            <destination>{8851778c-aa70-4a57-99cd-c0f18472da41}</destination>
+            <destination>{676e6f47-98de-40ec-9f8a-bfc435925389}</destination>
         </relationship>
         <relationship name="markers">
-            <destination>{c4b8b2d4-699a-4077-b58f-1b2cdafd8a15}</destination>
+            <destination>{87f8f878-8a17-4f25-8ad3-06e995bb382d}</destination>
         </relationship>
     </object>
     <object class="GameParameter" id="{fa9f2068-53e7-40a3-86b2-dcf947bd94bb}">
@@ -119,12 +119,12 @@
             <destination>{854974be-e1b5-4001-8f8c-e76d555f37ba}</destination>
         </relationship>
     </object>
-    <object class="SingleSound" id="{8851778c-aa70-4a57-99cd-c0f18472da41}">
+    <object class="SingleSound" id="{676e6f47-98de-40ec-9f8a-bfc435925389}">
         <property name="length">
-            <value>108.88889583333334</value>
+            <value>17.777770833333335</value>
         </property>
         <relationship name="audioFile">
-            <destination>{15493969-33d4-4208-926c-53b6a3e5da2d}</destination>
+            <destination>{35c278d3-69d3-4279-9cf6-5425f12e9f3f}</destination>
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{854974be-e1b5-4001-8f8c-e76d555f37ba}">
@@ -144,12 +144,12 @@
             <destination>{864bac05-24e7-4f28-acd3-678ba66dcdcd}</destination>
         </relationship>
     </object>
-    <object class="LoopRegion" id="{c4b8b2d4-699a-4077-b58f-1b2cdafd8a15}">
+    <object class="LoopRegion" id="{87f8f878-8a17-4f25-8ad3-06e995bb382d}">
         <property name="position">
             <value>0</value>
         </property>
         <property name="length">
-            <value>108.88889583333334</value>
+            <value>17.777770833333335</value>
         </property>
         <relationship name="timeline">
             <destination>{f2eb5f53-4cf3-488f-b5f2-f46209de5e0a}</destination>

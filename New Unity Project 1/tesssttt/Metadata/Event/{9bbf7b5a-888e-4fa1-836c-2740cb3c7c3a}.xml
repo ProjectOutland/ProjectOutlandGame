@@ -66,7 +66,7 @@
             <destination>{972def10-fed0-4379-972d-ed2a4280e66f}</destination>
         </relationship>
         <relationship name="modules">
-            <destination>{610ef274-e1a0-4e5b-91bb-babc323aee7c}</destination>
+            <destination>{381d42d5-9a85-4299-9ffc-c2e0798e82a9}</destination>
         </relationship>
         <relationship name="mixerGroup">
             <destination>{d090fb3d-981c-4255-882a-6a6782803e34}</destination>
@@ -74,10 +74,7 @@
     </object>
     <object class="Timeline" id="{0867efdf-ec31-4037-8962-d1d9df7007a9}">
         <relationship name="modules">
-            <destination>{610ef274-e1a0-4e5b-91bb-babc323aee7c}</destination>
-        </relationship>
-        <relationship name="markers">
-            <destination>{6e73946e-c0e2-4772-ac76-ef8f1ed269a9}</destination>
+            <destination>{381d42d5-9a85-4299-9ffc-c2e0798e82a9}</destination>
         </relationship>
     </object>
     <object class="GameParameter" id="{60433732-5118-4357-aa5f-e694729f0ae1}">
@@ -119,12 +116,12 @@
             <destination>{d090fb3d-981c-4255-882a-6a6782803e34}</destination>
         </relationship>
     </object>
-    <object class="SingleSound" id="{610ef274-e1a0-4e5b-91bb-babc323aee7c}">
+    <object class="SingleSound" id="{381d42d5-9a85-4299-9ffc-c2e0798e82a9}">
         <property name="length">
-            <value>108.88889583333334</value>
+            <value>17.777770833333335</value>
         </property>
         <relationship name="audioFile">
-            <destination>{e0ed7ae6-473f-43a7-bec0-3a76bcfdca89}</destination>
+            <destination>{1ff0fdcb-b1b0-4d80-b809-5f408ad96ba8}</destination>
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{d090fb3d-981c-4255-882a-6a6782803e34}">
@@ -142,20 +139,6 @@
         </relationship>
         <relationship name="output">
             <destination>{1236df81-f854-4f14-8c07-b44b0224a96d}</destination>
-        </relationship>
-    </object>
-    <object class="LoopRegion" id="{6e73946e-c0e2-4772-ac76-ef8f1ed269a9}">
-        <property name="position">
-            <value>0</value>
-        </property>
-        <property name="length">
-            <value>108.88889583333334</value>
-        </property>
-        <relationship name="timeline">
-            <destination>{0867efdf-ec31-4037-8962-d1d9df7007a9}</destination>
-        </relationship>
-        <relationship name="markerTrack">
-            <destination>{8b50d26a-7ab6-4638-a136-a76beb907e02}</destination>
         </relationship>
     </object>
     <object class="AutomationCurve" id="{95b41146-546c-4c93-9f02-790607dc4cc0}">
