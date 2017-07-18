@@ -25,8 +25,14 @@ public class AudioControl1 : MonoBehaviour
     public Color randomcolor;
     public Image thisbutton;
     public Color firstColor;
+    public string audioPath;
+    public float beatMin;
+    public int spectChannel;
 
     // DSP
+    FMOD.Sound sound;
+    FMOD.Channel channel;
+    FMOD.ChannelGroup channelGroup;
     FMOD.Studio.EventInstance[] ev;
     FMOD.DSP dsp;
     int WindowSize = 1024;
@@ -48,20 +54,28 @@ public class AudioControl1 : MonoBehaviour
         FMODUnity.RuntimeManager.LowlevelSystem.createDSPByType(FMOD.DSP_TYPE.FFT, out dsp);
         dsp.setParameterInt((int)FMOD.DSP_FFT.WINDOWTYPE, (int)FMOD.DSP_FFT_WINDOW.HANNING);
         dsp.setParameterInt((int)FMOD.DSP_FFT.WINDOWSIZE, WindowSize * 2);
-        FMOD.ChannelGroup channelGroup;
-        // Change to uniqe channel groups
-        FMODUnity.RuntimeManager.LowlevelSystem.getMasterChannelGroup(out channelGroup);
-
-        channelGroup.addDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, dsp);
-        FMODUnity.RuntimeManager.GetEventDescription(emitter.Event).getInstanceList(out ev);
+;
+        FMOD.RESULT result;
+        result = FMODUnity.RuntimeManager.LowlevelSystem.createChannelGroup(emitter.name, out channelGroup);
+        // Create Audio Sound Stream to analyse
+        result = FMODUnity.RuntimeManager.LowlevelSystem.createStream("tesssttt/Assets/" + audioPath, FMOD.MODE.CREATESTREAM, out sound);
+        result = FMODUnity.RuntimeManager.LowlevelSystem.playSound(sound, channelGroup, false, out channel);
+        channel.setVolume(0.0001f);
+        // Create DSP
+        result = channelGroup.addDSP(FMOD.CHANNELCONTROL_DSP_INDEX.HEAD, dsp);
     }
 
     // Update is called once per frame
     void Update()
     {
         emitter.SetParameter("volume", turndowntimer);
+        bool channelPlaying;
+        FMOD.RESULT result;
 
-       
+        result = channel.isPlaying(out channelPlaying);
+        if (!channelPlaying)
+            FMODUnity.RuntimeManager.LowlevelSystem.playSound(sound, channelGroup, false, out channel);
+
 
         if (turndownActivate == true && turndowntimer >=0.000000001)
         {
@@ -117,12 +131,14 @@ public class AudioControl1 : MonoBehaviour
             for (int i = 0; i < spectrum[0].Length; ++i) {
                 Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
             }
-            float[] dSpectrum = {0, 0, 0, 0, 0};
-            for (int i = 0; i <= 4; ++i) {
-                if (spectrum[0][i * 200] > 0.001f)
-                    dSpectrum[i] = spectrum[0][i * 200];
+            float[] dSpectrum = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            for (int i = 0; i <= 9; ++i) {
+                if (spectrum[0][i * 200] * 10000 > 0.00001f && turndowntimer > 0)
+                    dSpectrum[i] = spectrum[0][i * 100] * 10000;
             }
-            Debug.Log(string.Format("Spectrum {5}: {0} {1} {2} {3} {4}", dSpectrum[0], dSpectrum[1], dSpectrum[2], dSpectrum[3], dSpectrum[4], this.name));
+            if (spectrum[0][spectChannel] * 1000 > beatMin && turndowntimer > 0)
+                Debug.Log(string.Format("Spectrum {10}: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", dSpectrum[0], dSpectrum[1], dSpectrum[2], dSpectrum[3], dSpectrum[4], dSpectrum[5], dSpectrum[6], dSpectrum[7], dSpectrum[8], dSpectrum[9], this.name));
+
         }
         catch (System.Exception e) {
             // Debug.Log(e);
