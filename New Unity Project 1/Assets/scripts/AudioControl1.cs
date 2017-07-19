@@ -28,6 +28,8 @@ public class AudioControl1 : MonoBehaviour
     public string audioPath;
     public float beatMin;
     public int spectChannel;
+    public GameObject objToShade;
+    float chnlLoopTimer;
 
     // DSP
     FMOD.Sound sound;
@@ -69,13 +71,17 @@ public class AudioControl1 : MonoBehaviour
     void Update()
     {
         emitter.SetParameter("volume", turndowntimer);
-        bool channelPlaying;
-        FMOD.RESULT result;
+        //bool channelPlaying;
+        //FMOD.RESULT result;
 
-        result = channel.isPlaying(out channelPlaying);
-        if (!channelPlaying)
-            FMODUnity.RuntimeManager.LowlevelSystem.playSound(sound, channelGroup, false, out channel);
-
+        //result = channel.isPlaying(out channelPlaying);
+        //if (!channelPlaying && chnlLoopTimer > 1f) {
+        //    result = FMODUnity.RuntimeManager.LowlevelSystem.createStream("tesssttt/Assets/" + audioPath, FMOD.MODE.CREATESTREAM, out sound);
+        //    result = FMODUnity.RuntimeManager.LowlevelSystem.playSound(sound, channelGroup, false, out channel);
+        //    //Debug.Log("Looped" + emitter.name);
+        //    chnlLoopTimer = 0;
+        //}
+        //chnlLoopTimer += Time.deltaTime;
 
         if (turndownActivate == true && turndowntimer >=0.000000001)
         {
@@ -126,23 +132,29 @@ public class AudioControl1 : MonoBehaviour
         }
 
         // DSP Stuff
-        float[][] spectrum = GetSpectrumData();
-        try {
-            for (int i = 0; i < spectrum[0].Length; ++i) {
-                Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
-            }
-            float[] dSpectrum = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-            for (int i = 0; i <= 9; ++i) {
-                if (spectrum[0][i * 200] * 10000 > 0.00001f && turndowntimer > 0)
-                    dSpectrum[i] = spectrum[0][i * 100] * 10000;
-            }
-            if (spectrum[0][spectChannel] * 1000 > beatMin && turndowntimer > 0)
-                Debug.Log(string.Format("Spectrum {10}: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", dSpectrum[0], dSpectrum[1], dSpectrum[2], dSpectrum[3], dSpectrum[4], dSpectrum[5], dSpectrum[6], dSpectrum[7], dSpectrum[8], dSpectrum[9], this.name));
+        //float[][] spectrum = GetSpectrumData();
+        //try {
+        //    for (int i = 0; i < spectrum[0].Length; ++i) {
+        //        Debug.DrawLine(new Vector3(transform.position.x + i, transform.position.y, transform.position.z), new Vector3(transform.position.x + i, transform.position.y + spectrum[0][i], transform.position.z));
+        //    }
+        //    float[] dSpectrum = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        //    for (int i = 0; i <= 9; ++i) {
+        //        if (spectrum[0][i * 100] * 10000 > 0.00001f && turndowntimer > 0)
+        //            dSpectrum[i] = spectrum[0][i * 100] * 10000;
+        //    }
+        //    if (spectrum[0][spectChannel] * 10000 > beatMin && turndowntimer > 0) {
+        //        Debug.Log("Done a beat");
+        //    }
+        //    else if (turndowntimer > 0)
+        //        Debug.Log(string.Format("Spectrum {10}: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", dSpectrum[0], dSpectrum[1], dSpectrum[2], dSpectrum[3], dSpectrum[4], dSpectrum[5], dSpectrum[6], dSpectrum[7], dSpectrum[8], dSpectrum[9], this.name));
 
-        }
-        catch (System.Exception e) {
-            // Debug.Log(e);
-        }
+
+            //Debug.Log(spectrum[0][spectChannel]);
+
+        //}
+        //catch (System.Exception e) {
+        //    // Debug.Log(e);
+        //}
             
 
     }

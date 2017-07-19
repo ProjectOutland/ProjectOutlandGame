@@ -4,7 +4,7 @@
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Metallic("Metallic", Range(0,1)) = 0.0
-		_Music("Music", Range(0,1)) = 0.0
+		_Pulse1("Pulse1", Range(0,1)) = 0.0
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque"  }
@@ -28,7 +28,7 @@
 		half _Glossiness;
 		half _Metallic;
 		fixed4 _Color;
-		float _Music;
+		float _Pulse1;
 
 
 
@@ -40,16 +40,16 @@
 		UNITY_INSTANCING_CBUFFER_END
 
 		void vert(inout appdata_full v) {
-			float a = abs(v.vertex.y - _Music);
+			float a = abs(v.vertex.y - _Pulse1);
 			v.vertex.xyz += v.normal *saturate(1 - a * 2);
 			
-			if (_Music <= 0.1) {
+			if (_Pulse1 <= 0.1) {
 				// Inflate the bloody thing
 				//v.vertex.xyz = v.vertex.xyz + v.normal * cos(_Music);
 			}
-			//if (_Music <= 0.5) 
+			//if (_Pulse1 <= 0.5) 
 			{
-				v.vertex.xyz += v.normal * cos(1 - _Music)*0.5;
+				v.vertex.xyz += v.normal * cos(1 - _Pulse1)*0.5;
 			}
 		}
 
